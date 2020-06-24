@@ -12,10 +12,10 @@
 # By default this script does nothing.
 
 # rsyslogd
-[ -r /etc/profile ] && source /etc/profile
+zsh /etc/profile
 
 ulimit -c 0
-#service cron start
+service cron start
 #service ssh start
 exec supervisord -n -c /etc/supervisord.conf
 exit 0
