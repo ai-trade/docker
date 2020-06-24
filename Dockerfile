@@ -46,7 +46,6 @@ yarn config set prefix ~/.yarn
 # ENV LC_ALL zh_CN.UTF-8
 # ENV LANGUAGE zh_CN.UTF-8
 
-# ENV TERM xterm-256color
 
 #RUN apk update && apk upgrade &&\
 #apk add \
@@ -89,14 +88,14 @@ WORKDIR /
 COPY os .
 COPY boot .
 
+ENV TERM xterm-256color
 RUN \
 mkdir -p ~/.zplugin &&\
 git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin --depth=1 &&\
 git clone --depth=1 https://github.com/romkatv/gitstatus.git ~/.gitstatus &&\ 
-cat /root/.zplugin.zsh|rg "program|load|source|light"|zsh 
-# &&\
-# source ~/.zplugin/plugins/romkatv---powerlevel10k/gitstatus/install &&\
-# source ~/.gitstatus/gitstatus.plugin.sh 
+cat /root/.zplugin.zsh|rg "program|load|source|light"|zsh &&\
+source ~/.zplugin/plugins/romkatv---powerlevel10k/gitstatus/install &&\
+source ~/.gitstatus/gitstatus.plugin.sh 
 # ## cd /root/.config/nvim/autoload/coc.nvim &&\
 # ## yarn
 

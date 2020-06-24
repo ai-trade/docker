@@ -1,8 +1,6 @@
 source ~/.zplugin/bin/zplugin.zsh
 
-if [[ -r "~/.cache/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "~/.cache/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+[ -r "~/.cache/p10k-instant-prompt-${(%):-%n}.zsh" ] && source "~/.cache/p10k-instant-prompt-${(%):-%n}.zsh"
 
 zinit ice depth=1
 zinit light romkatv/powerlevel10k
