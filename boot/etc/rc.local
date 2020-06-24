@@ -24,6 +24,7 @@ mkdir -p /var/log/supervisor
 # chown redis:redis /var/log/redis
 
 rsync -avu /root.init/ /root/
+mkdir -p /var/run/sshd
 
 chmod 700 /root/.ssh
 chmod 600 /root/.ssh/*
