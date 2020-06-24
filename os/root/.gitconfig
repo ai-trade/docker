@@ -1,0 +1,28 @@
+[core]
+packedGitLimit = 128m
+packedGitWindowSize = 128m
+quotepath = false
+editor = vim
+
+[alias]
+st = status
+rpull = pull
+pull = pull
+
+[pack]
+deltaCacheSize = 128m
+packSizeLimit = 128m
+windowMemory = 128m
+
+[http]
+postbuffer = 5m
+
+[pull]
+default = current
+
+[push]
+default = current
+
+[user]
+email = anyone@renwu.cool
+name = anyone

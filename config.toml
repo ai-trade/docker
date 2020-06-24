@@ -1,0 +1,5 @@
+insecure-entitlements = [ "network.host", "security.insecure" ]
+
+[registry."docker.io"]
+  mirrors = ["c1c699a1.mirror.aliyuncs.com"]
+  http = false

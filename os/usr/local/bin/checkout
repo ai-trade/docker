@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+find . -name .git -type d -execdir sh -c 'git checkout $1' ";"
+

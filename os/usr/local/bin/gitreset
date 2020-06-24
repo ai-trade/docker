@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+MSG=$1
+
+if [ -z "$MSG" ];then
+  MSG='首先，要有光'
+fi
+
+git checkout --orphan newBranch
+git add -A  # Add all files and commit them
+git commit -m "$MSG"
+git branch -D master  # Deletes the master branch
+git branch -m master  # Rename the current branch to master
+git push -f --set-upstream origin master
+git gc --aggressive --prune=all     # remove the old files
+git push --set-upstream origin master -f
+

@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+find . -name .git -type d -exec sh -c 'cd {}/..&&echo -e "\n\033[1;32m>> cd $(pwd)\033[0m\n"&&git pull -v && git pull origin master && git merge master' ";"

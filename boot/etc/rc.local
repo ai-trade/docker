@@ -1,0 +1,39 @@
+#!/bin/sh -e
+
+mkdir -p  /etc/ssh/host
+keygen () {
+FILE=/etc/ssh/host/ssh_host_$1_key
+if [ ! -f "$FILE" ]; then
+ssh-keygen -t $1 -P "" -f $FILE
+fi
+}
+keygen rsa
+keygen ecdsa
+keygen ed25519
+ln -s /etc/ssh/host/* /etc/ssh/
+
+mkdir -p /var/log/supervisor
+#mkdir -p /var/log/nginx
+# mkdir -p /var/log/nullmailer
+#chown nullmail /var/log/nullmailer
+
+# mkdir -p /var/log/portage/elog
+# mkdir -p /var/log/sandbox
+
+# mkdir -p /var/log/redis
+# chown redis:redis /var/log/redis
+
+rsync -avu /root.init/ /root/
+
+chmod 700 /root/.ssh
+chmod 600 /root/.ssh/*
+# chmod 644 /root/.ssh/authorized_keys
+# chmod 644 /root/.ssh/known_hosts
+# chmod 644 /root/.ssh/*.pub > /dev/null 2>&1
+# chmod 755 /root/.ssh
+
+rcLocal=$(cat /etc/rc.local.init)
+mv /etc/rc.local.init /etc/rc.local
+chmod 777 /tmp
+sh -c "$rcLocal"
+

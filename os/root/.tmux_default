@@ -1,0 +1,16 @@
+session=$(whoami)
+tmux has -t $session 2> /dev/null
+
+if [ $? != 0 ]; then
+    tmux new -d -n h5 -s $session "cd ~;clear;zsh"
+    tmux splitw -h -p 15 -t $session "cd ~;zsh"
+    tmux select-pane -L
+
+    tmux new-window -n api "cd ~;zsh"
+    tmux splitw -h -p 15 -t $session "cd ~;zsh"
+    tmux select-pane -L
+
+    tmux selectw -t $session:0
+fi
+tmux -2 att -t $session
+
