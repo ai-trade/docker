@@ -205,14 +205,18 @@ WORKDIR /
 COPY boot .
 COPY os .
 
-RUN nvim +PlugInstall +qa;\
-nvim +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur' +qa &&\
+
+RUN \
 mkdir -p ~/.zplugin &&\
 git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin --depth=1 &&\
 cat /root/.zplugin.zsh|grep -P "program|source|light"|zsh &&\
 sed '/github/d' /etc/hosts | tee /etc/hosts &&\
-curl --retry 100 -fLo /usr/share/nvim/runtime/autoload/plug.vim --create-dirs \
-https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+RUN curl --retry 100 -fLo /usr/share/nvim/runtime/autoload/plug.vim --create-dirs &&\
+nvim +PlugInstall +qa &&\
+nvim +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur' +qa 
+#\
+# https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ##
 ## RUN git clone https://github.com/asdf-vm/asdf.git ~/.asdf &&\
 ## cd ~/.asdf &&\
