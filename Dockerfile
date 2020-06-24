@@ -15,7 +15,7 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 && chsh -s /bin/zsh root \
 && ln -s /usr/bin/pip3 /usr/bin/pip \
 && ln -s /usr/bin/gist-paste /usr/bin/gist \
-&& pip config set global.index-url https://mirrors.aliyun.com/pypi/simple &&\
+&& pip config set global.index-url https://mirrors.aliyun.com/pypi/simple \
 && pip install yapf flake8 xonsh ipython
 
 RUN git clone https://github.com/VundleVim/Vundle.vim.git /usr/share/nvim/bundle/Vundle.vim --depth=1
