@@ -9,7 +9,7 @@ ENV TZ=Asia/Shanghai
 RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 && apt-get update \
 && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
-&& apt-get install -y tzdata python3 sudo curl wget python3-pip tmux openssh-client openssh-server supervisor zsh language-pack-zh-hans rsync mlocate neovim git g++ ripgrep python3-dev gist fzf less util-linux apt-utils lua5.3 ctags htop tree cron python-dev libpq-dev\
+&& apt-get install -y tzdata python3 sudo curl wget python3-pip tmux openssh-client openssh-server supervisor zsh language-pack-zh-hans rsync mlocate neovim git g++ ripgrep python3-dev gist fzf less util-linux apt-utils lua5.3 ctags htop tree cron python-dev libpq-dev postgresql-client\
 && locale-gen zh_CN.UTF-8 \
 && apt-get clean \
 && apt-get autoclean \
