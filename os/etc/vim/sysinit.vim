@@ -431,3 +431,4 @@ let g:indent_guides_enable_on_vim_startup = 1
 let g:go_metalinter_command="golangci-lint"
 set ts=2 sw=2 expandtab softtabstop=2
 autocmd FileType python setlocal et sta sw=2 sts=2
+autocmd FileType xonsh setlocal et sta sw=2 sts=2
