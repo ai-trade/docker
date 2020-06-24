@@ -1,0 +1,26 @@
+version: '3'
+services:
+  
+  aitrade-dev-zsp:
+    container_name : zsp
+    hostname : aitrade/dev
+    image: aitrade/dev
+    restart: unless-stopped
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - "10100:22"
+      - "10108:80"
+      - "10110-10113:10010-10013"
+    volumes:
+      - /mnt/ssh/aitrade/dev/user/zsp/etc/ssh/host:/etc/ssh/host
+      - /mnt/ssh/aitrade/dev/user/zsp/root/.ssh:/root/.ssh
+      - /mnt/docker/aitrade/dev/user/zsp/var/log:/var/log
+      - /mnt/docker/aitrade/dev/user/zsp/etc/rc.d:/etc/rc.d
+      - /mnt/docker/aitrade/dev/user/zsp/etc/supervisor.d:/etc/supervisor.d
+      - /mnt/docker/aitrade/dev/user/zsp/home:/home
+      - /mnt/docker/aitrade/dev/user/zsp/root:/root
+      - /tmp/docker/aitrade/dev/zsp:/tmp
+      - /etc/nginx/conf.d/aitrade/dev/zsp:/etc/nginx/conf.d
+    #   - /mnt/docker/aitrade/dev/user/zsp/var/lib/redis:/var/lib/redis
+  

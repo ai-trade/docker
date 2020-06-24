@@ -1,0 +1,26 @@
+version: '3'
+services:
+  
+  aitrade-dev-yi:
+    container_name : yi
+    hostname : aitrade/dev
+    image: aitrade/dev
+    restart: unless-stopped
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - "10200:22"
+      - "10208:80"
+      - "10210-10213:10010-10013"
+    volumes:
+      - /mnt/ssh/aitrade/dev/user/yi/etc/ssh/host:/etc/ssh/host
+      - /mnt/ssh/aitrade/dev/user/yi/root/.ssh:/root/.ssh
+      - /mnt/docker/aitrade/dev/user/yi/var/log:/var/log
+      - /mnt/docker/aitrade/dev/user/yi/etc/rc.d:/etc/rc.d
+      - /mnt/docker/aitrade/dev/user/yi/etc/supervisor.d:/etc/supervisor.d
+      - /mnt/docker/aitrade/dev/user/yi/home:/home
+      - /mnt/docker/aitrade/dev/user/yi/root:/root
+      - /tmp/docker/aitrade/dev/yi:/tmp
+      - /etc/nginx/conf.d/aitrade/dev/yi:/etc/nginx/conf.d
+    #   - /mnt/docker/aitrade/dev/user/yi/var/lib/redis:/var/lib/redis
+  

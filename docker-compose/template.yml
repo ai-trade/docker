@@ -2,8 +2,8 @@ version: '3'
 services:
   
   ${image.replace("/","-")}-${user}:
-    container_name : ${image}.${user}
-    hostname : ai.${user}
+    container_name : ${user}
+    hostname : ${image}
     image: ${image}
     restart: unless-stopped
     cap_add:
