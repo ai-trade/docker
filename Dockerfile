@@ -17,32 +17,26 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 && ln -s /usr/bin/pip3 /usr/bin/pip \
 && ln -s /usr/bin/gist-paste /usr/bin/gist \
 && pip config set global.index-url https://mirrors.aliyun.com/pypi/simple \
-&& pip install yapf flake8 xonsh ipython
+&& pip install yapf flake8 xonsh ipython \
+&& rm -rf /etc/ssh/ssh_host_*
+
+SHELL ["/bin/zsh", "-c"]
 
 # 不 passwd -d 这样没法ssh秘钥登录，每次都要输入密码 
-
-# RUN ssh-keygen -t rsa -P "" -f /etc/ssh/ssh_host_rsa_key &&\
-# ssh-keygen -t ecdsa -P "" -f /etc/ssh/ssh_host_ecdsa_key &&\
-# ssh-keygen -t ed25519 -P "" -f /etc/ssh/ssh_host_ed25519_key
 
 RUN \
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf &&\
 cd ~/.asdf &&\
-git checkout "$(git describe --abbrev=0 --tags)" 
-
-SHELL ["/bin/zsh", "-c"]
-
-RUN . ~/.asdf/asdf.sh &&\
+git checkout "$(git describe --abbrev=0 --tags)" &&\
+. ~/.asdf/asdf.sh &&\
 asdf plugin add nodejs &&\
 ~/.asdf/plugins/nodejs/bin/import-release-team-keyring &&\ 
 asdf install nodejs $(asdf list all nodejs|tail -1) &&\
 asdf global nodejs $(asdf list nodejs|tail -1) &&\
-asdf plugin add yarn 
-
-RUN . ~/.asdf/asdf.sh &&\
-asdf install yarn $(asdf  list all yarn|tail -1) 
-
-RUN . ~/.asdf/asdf.sh &&\
+asdf plugin add yarn  &&\
+. ~/.asdf/asdf.sh &&\
+asdf install yarn $(asdf list all yarn|tail -1) &&\
+. ~/.asdf/asdf.sh &&\
 asdf global yarn $(asdf list yarn|tail -1) &&\
 yarn config set registry https://registry.npm.taobao.org &&\
 yarn config set prefix ~/.yarn
@@ -221,7 +215,6 @@ COPY boot .
 ## yarn config set prefix ~/.yarn
 # RUN usermod -s /bin/zsh root && passwd -d root 
 
-RUN rm -rf /etc/ssh/ssh_host_*
 
 RUN mv /root /root.init && updatedb
 
