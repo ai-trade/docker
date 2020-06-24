@@ -99,13 +99,14 @@ COPY os/etc/vim /etc/vim
 RUN \
 git clone https://github.com/Shougo/dein.vim --depth=1 /etc/vim/repos/github.com/Shougo/dein.vim &&\
 vim +"call dein#install()" +qall &&\
-vim +'call dein#update()' +qall &&\ 
-vim +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur' +qa 
+vim +'call dein#update()' +qall 
 
 WORKDIR /
 COPY os .
 COPY boot .
 
+
+RUN vim +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur' +qa 
 
 # ## cd /root/.config/nvim/autoload/coc.nvim &&\
 # ## yarn
