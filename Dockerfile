@@ -6,7 +6,7 @@ ENV TZ=Asia/Shanghai
 RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 && apt-get update \
 && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
-&& apt-get install -y tzdata python3 sudo curl wget python3-pip tmux openssh-client openssh-server supervisor zsh language-pack-zh-hans rsync mlocate neovim git g++ ripgrep python3-dev gist fzf less column\
+&& apt-get install -y tzdata python3 sudo curl wget python3-pip tmux openssh-client openssh-server supervisor zsh language-pack-zh-hans rsync mlocate neovim git g++ ripgrep python3-dev gist fzf less util-linux\
 && locale-gen zh_CN.UTF-8 \
 && apt-get clean \
 && apt-get autoclean \
@@ -20,6 +20,10 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 && pip install yapf flake8 xonsh ipython
 
 # 不 passwd -d 这样没法ssh秘钥登录，每次都要输入密码 
+
+RUN ssh-keygen -t rsa -P "" -f /etc/ssh/ssh_host_rsa_key &&\
+ssh-keygen -t ecdsa -P "" -f /etc/ssh/ssh_host_ecdsa_key &&\
+ssh-keygen -t ed25519 -P "" -f /etc/ssh/ssh_host_ed25519_key
 
 RUN \
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf &&\
@@ -84,9 +88,6 @@ cat /root/.zplugin.zsh|rg "program|load|source|light"|zsh &&\
 source ~/.zplugin/plugins/romkatv---powerlevel10k/gitstatus/install &&\
 source ~/.gitstatus/gitstatus.plugin.sh 
 
-RUN ssh-keygen -t rsa -P "" -f /etc/ssh/ssh_host_rsa_key &&\
-ssh-keygen -t ecdsa -P "" -f /etc/ssh/ssh_host_ecdsa_key &&\
-ssh-keygen -t ed25519 -P "" -f /etc/ssh/ssh_host_ed25519_key
 
 
 COPY os/usr/share/nvim /usr/share/nvim
