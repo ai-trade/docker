@@ -1,0 +1,26 @@
+version: '3'
+services:
+  
+  ${image.replace("/","-")}-${user}:
+    container_name : ${image}.${user}
+    hostname : ai.${user}
+    image: ${image}
+    restart: unless-stopped
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - "${10000+port}:22"
+      - "${10008+port}:80"
+      - "${10010+port}-${10013+port}:10010-10013"
+    volumes:
+      - /mnt/ssh/${image}/user/${user}/etc/ssh/host:/etc/ssh/host
+      - /mnt/ssh/${image}/user/${user}/root/.ssh:/root/.ssh
+      - /mnt/docker/${image}/user/${user}/var/log:/var/log
+      - /mnt/docker/${image}/user/${user}/etc/rc.d:/etc/rc.d
+      - /mnt/docker/${image}/user/${user}/etc/supervisor.d:/etc/supervisor.d
+      - /mnt/docker/${image}/user/${user}/home:/home
+      - /mnt/docker/${image}/user/${user}/root:/root
+      - /tmp/docker/${image}/${user}:/tmp
+      - /etc/nginx/conf.d/${image}/${user}:/etc/nginx/conf.d
+    #   - /mnt/docker/${image}/user/${user}/var/lib/redis:/var/lib/redis
+  
