@@ -1,19 +1,30 @@
 FROM ubuntu
-RUN sed -i "s/archive.ubuntu.com/mirrors.aliyun.com/g" /etc/apt/sources.list &&\
-apt-get update -y &&\
-apt-get install -y python3 sudo curl wget &&\
-update-alternatives --install /usr/bin/python python /usr/bin/python3 1 &&\
-curl --silent --show-error --retry 5 https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python 
+ENV DEBIAN_FRONTEND noninteractive 
 
+ENV TZ=Asia/Shanghai
+RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
+&& apt-get update \
+&& ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
+&& apt-get install -y tzdata python3 sudo curl wget python3-pip tmux openssh-client openssh-server supervisor zsh language-pack-zh-hans rsync mlocate neovim git g++ ripgrep python3-dev gist fzf less\
+&& locale-gen zh_CN.UTF-8 \
+&& apt-get clean \
+&& apt-get autoclean \
+&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*  \
+&& update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
+&& passwd -d root \
+&& chsh -s /bin/zsh root \
+&& ln -s /usr/bin/pip3 /usr/bin/pip \
+&& ln -s /usr/bin/gist-paste /usr/bin/gist \
+&& pip config set global.index-url https://mirrors.aliyun.com/pypi/simple &&\
+&& pip install yapf flake8 xonsh ipython
+
+RUN git clone https://github.com/VundleVim/Vundle.vim.git /usr/share/nvim/bundle/Vundle.vim --depth=1
 
 # ENV LANG zh_CN.UTF-8
 # ENV LC_ALL zh_CN.UTF-8
 # ENV LANGUAGE zh_CN.UTF-8
 
 # ENV TERM xterm-256color
-
-#RUN sed -i -e 's/v[[:digit:]]\..*\//edge\//g' /etc/apk/repositories &&\
-#sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories
 
 #RUN apk update && apk upgrade &&\
 #apk add \
@@ -35,7 +46,6 @@ curl --silent --show-error --retry 5 https://raw.github.com/pypa/pip/master/cont
 #cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &&\
 #echo "Asia/Shanghai" > /etc/timezone &&\
 #apk del tzdata &&\
-#pip config set global.index-url https://mirrors.aliyun.com/pypi/simple &&\
 #pip install xonsh ipython &&\
 #gem sources --add https://mirrors.tuna.tsinghua.edu.cn/rubygems/ --remove https://rubygems.org/ &&\
 #gem install gist &&\
@@ -44,10 +54,9 @@ curl --silent --show-error --retry 5 https://raw.github.com/pypa/pip/master/cont
 
 #SHELL ["/bin/zsh", "-c"]
 
-#COPY os/usr/share/nvim /usr/share/nvim
-#COPY os/etc/vim /etc/vim
+COPY os/usr/share/nvim /usr/share/nvim
+COPY os/etc/vim /etc/vim
 
-#RUN pip install yapf flake8
 #RUN \
 #curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > /tmp/installer.sh &&\
 #bash /tmp/installer.sh /etc/vim/dein &&\
@@ -64,9 +73,9 @@ curl --silent --show-error --retry 5 https://raw.github.com/pypa/pip/master/cont
 #yarn global add pm2 concurrently coffeescript npm-check-updates &&\
 #npm config set registry https://registry.npm.taobao.org
 
-#WORKDIR /
-#COPY os .
-#COPY boot .
+WORKDIR /
+COPY os .
+COPY boot .
 
 #RUN \
 #mkdir -p ~/.zplugin &&\
@@ -191,21 +200,19 @@ curl --silent --show-error --retry 5 https://raw.github.com/pypa/pip/master/cont
 ##
 ## # echo 'GENTOO_MIRRORS=http://mirrors.aliyun.com/gentoo/' >>  /etc/portage/make.conf
 ##
-## # RUN git clone https://github.com/VundleVim/Vundle.vim.git /usr/share/nvim/bundle/Vundle.vim --depth=1
-##
-##
-## WORKDIR /
-## COPY boot .
-## COPY os .
-##
-## RUN nvim +PlugInstall +qa;\
-## nvim +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur' +qa &&\
-## mkdir -p ~/.zplugin &&\
-## git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin --depth=1 &&\
-## cat /root/.zplugin.zsh|grep -P "program|source|light"|zsh &&\
-## sed '/github/d' /etc/hosts | tee /etc/hosts &&\
-## curl --retry 100 -fLo /usr/share/nvim/runtime/autoload/plug.vim --create-dirs \
-## https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+WORKDIR /
+COPY boot .
+COPY os .
+
+RUN nvim +PlugInstall +qa;\
+nvim +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur' +qa &&\
+mkdir -p ~/.zplugin &&\
+git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin --depth=1 &&\
+cat /root/.zplugin.zsh|grep -P "program|source|light"|zsh &&\
+sed '/github/d' /etc/hosts | tee /etc/hosts &&\
+curl --retry 100 -fLo /usr/share/nvim/runtime/autoload/plug.vim --create-dirs \
+https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ##
 ## RUN git clone https://github.com/asdf-vm/asdf.git ~/.asdf &&\
 ## cd ~/.asdf &&\
@@ -225,7 +232,7 @@ curl --silent --show-error --retry 5 https://raw.github.com/pypa/pip/master/cont
 ##FROM mirror.ccs.tencentyun.com/mhart/alpine-node
 ##COPY --from=build / /
 
-#RUN apk add sudo && usermod -s /bin/zsh root && passwd -d root # 不这样没法ssh秘钥登录，每次都要输入密码 
-#RUN mv /root /root.init && updatedb
+# RUN usermod -s /bin/zsh root && passwd -d root # 不这样没法ssh秘钥登录，每次都要输入密码 
+RUN mv /root /root.init && updatedb
 CMD ["/etc/rc.local"]
 
