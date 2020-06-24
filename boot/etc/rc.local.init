@@ -12,7 +12,8 @@
 # By default this script does nothing.
 
 # rsyslogd
-source /etc/profile
+[ -r /etc/profile ] && source /etc/profile
+
 ulimit -c 0
 #service cron start
 #service ssh start
