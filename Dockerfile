@@ -1,6 +1,9 @@
 FROM ubuntu
 ENV DEBIAN_FRONTEND noninteractive 
 ENV TERM xterm-256color
+ENV LANG zh_CN.UTF-8
+ENV LC_ALL zh_CN.UTF-8
+ENV LANGUAGE zh_CN.UTF-8
 
 ENV TZ=Asia/Shanghai
 RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
@@ -41,10 +44,19 @@ asdf global yarn $(asdf list yarn|tail -1) &&\
 yarn config set registry https://registry.npm.taobao.org &&\
 yarn config set prefix ~/.yarn
 
-# ENV LANG zh_CN.UTF-8
-# ENV LC_ALL zh_CN.UTF-8
-# ENV LANGUAGE zh_CN.UTF-8
 
+ENV CARGO_HOME /opt/rust
+ENV RUSTUP_HOME /opt/rust
+COPY os/root/.cargo /root/.cargo
+RUN export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup" &&\
+export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static" &&\
+curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path &&\
+cd $CARGO_HOME &&\
+ln -s ~/.cargo/config . &&\
+source $CARGO_HOME/env &&\
+cargo install cargo-cache sd fd-find tokei diskus --root /usr/local &&\
+cargo-cache --remove-dir git-repos,registry-sources &&\
+echo 'PATH=/opt/rust/bin:$PATH' >> /etc/profile.d/path.sh
 
 #RUN apk update && apk upgrade &&\
 #apk add \
@@ -82,6 +94,7 @@ cat /root/.zplugin.zsh|rg "program|load|source|light"|zsh &&\
 source ~/.zplugin/plugins/romkatv---powerlevel10k/gitstatus/install 
 
 
+
 COPY os/usr/share/nvim /usr/share/nvim
 COPY os/etc/vim /etc/vim
 
@@ -99,20 +112,6 @@ COPY boot .
 # ## cd /root/.config/nvim/autoload/coc.nvim &&\
 # ## yarn
 
-## ENV CARGO_HOME /opt/rust
-## ENV RUSTUP_HOME /opt/rust
-## WORKDIR /
-## COPY os/root/.cargo /root/.cargo
-##
-## RUN export RUSTUP_UPDATE_ROOT="https://mirrors.ustc.edu.cn/rust-static/rustup" &&\
-## export RUSTUP_DIST_SERVER="https://mirrors.ustc.edu.cn/rust-static" &&\
-## curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path &&\
-## cd $CARGO_HOME &&\
-## ln -s ~/.cargo/config . &&\
-## source $CARGO_HOME/env &&\
-## cargo install cargo-cache sd fd-find tokei diskus --root /usr/local &&\
-## cargo-cache --remove-dir git-repos,registry-sources &&\
-## echo 'PATH=/opt/rust/bin:$PATH' >> /etc/profile.d/path.sh
 
 ## &&\
 
