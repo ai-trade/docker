@@ -9,7 +9,7 @@ ENV TZ=Asia/Shanghai
 RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 && apt-get update \
 && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
-&& apt-get install -y tzdata python3 sudo curl wget python3-pip tmux openssh-client openssh-server supervisor zsh language-pack-zh-hans rsync mlocate neovim git g++ ripgrep python3-dev gist fzf less util-linux apt-utils\
+&& apt-get install -y tzdata python3 sudo curl wget python3-pip tmux openssh-client openssh-server supervisor zsh language-pack-zh-hans rsync mlocate neovim git g++ ripgrep python3-dev gist fzf less util-linux apt-utils lua5.3 ctags \
 && locale-gen zh_CN.UTF-8 \
 && apt-get clean \
 && apt-get autoclean \
@@ -54,7 +54,7 @@ curl https://sh.rustup.rs -sSf | sh -s -- -y --no-modify-path &&\
 cd $CARGO_HOME &&\
 ln -s ~/.cargo/config . &&\
 source $CARGO_HOME/env &&\
-cargo install cargo-cache sd fd-find tokei diskus --root /usr/local &&\
+cargo install cargo-cache exa sd fd-find tokei diskus --root /usr/local &&\
 cargo-cache --remove-dir git-repos,registry-sources &&\
 echo 'PATH=/opt/rust/bin:$PATH' >> /etc/profile.d/path.sh
 
