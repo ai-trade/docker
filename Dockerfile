@@ -43,7 +43,7 @@ asdf install yarn $(asdf list all yarn|tail -1) &&\
 asdf global yarn $(asdf list yarn|tail -1) &&\
 yarn config set registry https://registry.npm.taobao.org &&\
 yarn config set prefix ~/.yarn &&\
-yarn global add neovim npm-check-updates coffeescript &&\
+yarn global add neovim npm-check-updates coffeescript 
 
 
 ENV CARGO_HOME /opt/rust
