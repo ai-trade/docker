@@ -92,7 +92,7 @@ COPY os/usr/share/nvim /usr/share/nvim
 COPY os/etc/vim /etc/vim
 
 RUN \
-git clone https://github.com/Shougo/dein.vim --depth=1 /etc/vim/dein &&\
+git clone https://github.com/Shougo/dein.vim --depth=1 /etc/vim/repos/github.com/Shougo/dein.vim &&\
 vim +"call dein#install()" +qall &&\
 vim +'call dein#update()' +qall &&\ 
 vim +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur' +qa 

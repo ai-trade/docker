@@ -7,7 +7,7 @@
 """""""""""""""""""""""""""""""""""""""
 "filetype off                  " required
 
-set runtimepath+=/etc/vim/dein/repos/github.com/Shougo/dein.vim
+set runtimepath+=/etc/vim/repos/github.com/Shougo/dein.vim
 
 if dein#load_state('/etc/vim/dein')
   let g:dein#types#git#clone_depth = 1
