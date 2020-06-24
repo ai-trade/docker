@@ -21,9 +21,9 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 
 # 不 passwd -d 这样没法ssh秘钥登录，每次都要输入密码 
 
-RUN ssh-keygen -t rsa -P "" -f /etc/ssh/ssh_host_rsa_key &&\
-ssh-keygen -t ecdsa -P "" -f /etc/ssh/ssh_host_ecdsa_key &&\
-ssh-keygen -t ed25519 -P "" -f /etc/ssh/ssh_host_ed25519_key
+# RUN ssh-keygen -t rsa -P "" -f /etc/ssh/ssh_host_rsa_key &&\
+# ssh-keygen -t ecdsa -P "" -f /etc/ssh/ssh_host_ecdsa_key &&\
+# ssh-keygen -t ed25519 -P "" -f /etc/ssh/ssh_host_ed25519_key
 
 RUN \
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf &&\
