@@ -18,6 +18,8 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 && pip config set global.index-url https://mirrors.aliyun.com/pypi/simple \
 && pip install yapf flake8 xonsh ipython
 
+# 不 passwd -d 这样没法ssh秘钥登录，每次都要输入密码 
+
 RUN \
 git clone https://github.com/asdf-vm/asdf.git ~/.asdf &&\
 cd ~/.asdf &&\
@@ -78,14 +80,10 @@ COPY os/usr/share/nvim /usr/share/nvim
 COPY os/etc/vim /etc/vim
 
 RUN \
-curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > /tmp/installer.sh &&\
-bash /tmp/installer.sh /etc/vim/dein &&\
-rm -rf /tmp/installer.sh &&\
+git clone https://github.com/Shougo/dein.vim --depth=1 /etc/vim/dein &&\
 vim +"call dein#install()" +qall &&\
 vim +'call dein#update()' +qall &&\ 
 vim +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur' +qa 
-
-
 
 WORKDIR /
 COPY os .
@@ -94,10 +92,12 @@ COPY boot .
 RUN \
 mkdir -p ~/.zplugin &&\
 git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin --depth=1 &&\
-cat /root/.zplugin.zsh|rg "program|load|source|light"|zsh &&\
-source ~/.zplugin/plugins/romkatv---powerlevel10k/gitstatus/install &&\
-git clone --depth=1 https://github.com/romkatv/gitstatus.git ~/.gitstatus &&\
-source ~/.gitstatus/gitstatus.plugin.sh 
+git clone --depth=1 https://github.com/romkatv/gitstatus.git ~/.gitstatus 
+
+# cat /root/.zplugin.zsh|rg "program|load|source|light"|zsh 
+# &&\
+# source ~/.zplugin/plugins/romkatv---powerlevel10k/gitstatus/install &&\
+# source ~/.gitstatus/gitstatus.plugin.sh 
 # ## cd /root/.config/nvim/autoload/coc.nvim &&\
 # ## yarn
 
@@ -198,12 +198,6 @@ source ~/.gitstatus/gitstatus.plugin.sh
 ##
 ## # echo 'GENTOO_MIRRORS=http://mirrors.aliyun.com/gentoo/' >>  /etc/portage/make.conf
 ##
-
-WORKDIR /
-COPY boot .
-COPY os .
-
-
 # RUN curl --retry 100 -fLo /usr/share/nvim/runtime/autoload/plug.vim --create-dirs &&\
 # nvim +PlugInstall +qa &&\
 # nvim +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur' +qa 
@@ -224,11 +218,9 @@ COPY os .
 ## #RUN ssh-keygen -t rsa -P "" -f /etc/ssh/ssh_host_rsa_key &&\
 ## #ssh-keygen -t ecdsa -P "" -f /etc/ssh/ssh_host_ecdsa_key &&\
 ## #ssh-keygen -t ed25519 -P "" -f /etc/ssh/ssh_host_ed25519_key
-##
-##FROM mirror.ccs.tencentyun.com/mhart/alpine-node
-##COPY --from=build / /
 
-# RUN usermod -s /bin/zsh root && passwd -d root # 不这样没法ssh秘钥登录，每次都要输入密码 
+# RUN usermod -s /bin/zsh root && passwd -d root 
+
 RUN mv /root /root.init && updatedb
 CMD ["/etc/rc.local"]
 
