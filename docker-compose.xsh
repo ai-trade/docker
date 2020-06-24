@@ -16,7 +16,7 @@ def main():
   for image, user_dict in CONFIG.items():
     for user,port in user_dict.items():
       mkdir -p @(user)
-      outpath = f"{user}/docker-compose.yml"
+      outpath = f"{COMPOSE_DIR}/{user}/docker-compose.yml"
       print(outpath)
       with open(outpath,"w") as out:
         out.write(
