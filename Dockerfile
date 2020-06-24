@@ -18,7 +18,27 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 && pip config set global.index-url https://mirrors.aliyun.com/pypi/simple \
 && pip install yapf flake8 xonsh ipython
 
-RUN git clone https://github.com/VundleVim/Vundle.vim.git /usr/share/nvim/bundle/Vundle.vim --depth=1
+RUN \
+git clone https://github.com/asdf-vm/asdf.git ~/.asdf &&\
+cd ~/.asdf &&\
+git checkout "$(git describe --abbrev=0 --tags)" 
+
+SHELL ["/bin/zsh", "-c"]
+
+RUN . ~/.asdf/asdf.sh &&\
+asdf plugin add nodejs &&\
+~/.asdf/plugins/nodejs/bin/import-release-team-keyring &&\ 
+asdf install nodejs $(asdf list all nodejs|tail -1) &&\
+asdf global nodejs $(asdf list nodejs|tail -1) &&\
+asdf plugin add yarn 
+
+RUN . ~/.asdf/asdf.sh &&\
+asdf install yarn $(asdf  list all yarn|tail -1) 
+
+RUN . ~/.asdf/asdf.sh &&\
+asdf global yarn $(asdf list yarn|tail -1) &&\
+yarn config set registry https://registry.npm.taobao.org &&\
+yarn config set prefix ~/.yarn
 
 # ENV LANG zh_CN.UTF-8
 # ENV LC_ALL zh_CN.UTF-8
@@ -52,42 +72,34 @@ RUN git clone https://github.com/VundleVim/Vundle.vim.git /usr/share/nvim/bundle
 #wget https://raw.githubusercontent.com/eshizhan/dstat/master/dstat -O /usr/bin/dstat &&\
 #chmod +x /usr/bin/dstat
 
-#SHELL ["/bin/zsh", "-c"]
+
 
 COPY os/usr/share/nvim /usr/share/nvim
 COPY os/etc/vim /etc/vim
 
-#RUN \
-#curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > /tmp/installer.sh &&\
-#bash /tmp/installer.sh /etc/vim/dein &&\
-#rm -rf /tmp/installer.sh &&\
-#vim +"call dein#install()" +qall &&\
-#vim +'call dein#update()' +qall &&\ 
-#vim +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur' +qa 
+RUN \
+curl https://raw.githubusercontent.com/Shougo/dein.vim/master/bin/installer.sh > /tmp/installer.sh &&\
+bash /tmp/installer.sh /etc/vim/dein &&\
+rm -rf /tmp/installer.sh &&\
+vim +"call dein#install()" +qall &&\
+vim +'call dein#update()' +qall &&\ 
+vim +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur' +qa 
 
-#RUN  git clone https://github.com/asdf-vm/asdf.git ~/.asdf &&\
-#cd ~/.asdf &&\
-#git checkout "$(git describe --abbrev=0 --tags)" 
 
-#RUN yarn config set registry https://registry.npm.taobao.org &&\
-#yarn global add pm2 concurrently coffeescript npm-check-updates &&\
-#npm config set registry https://registry.npm.taobao.org
 
 WORKDIR /
 COPY os .
 COPY boot .
 
-#RUN \
-#mkdir -p ~/.zplugin &&\
-#git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin --depth=1 &&\
-#cat /root/.zplugin.zsh|rg "program|load|source|light"|zsh &&\
-#source ~/.zplugin/plugins/romkatv---powerlevel10k/gitstatus/install
-## git clone --depth=1 https://github.com/romkatv/gitstatus.git ~/.gitstatus &&\
-## source ~/.gitstatus/gitstatus.plugin.sh &&\
-
-
-## cd /root/.config/nvim/autoload/coc.nvim &&\
-## yarn
+RUN \
+mkdir -p ~/.zplugin &&\
+git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin --depth=1 &&\
+cat /root/.zplugin.zsh|rg "program|load|source|light"|zsh &&\
+source ~/.zplugin/plugins/romkatv---powerlevel10k/gitstatus/install &&\
+git clone --depth=1 https://github.com/romkatv/gitstatus.git ~/.gitstatus &&\
+source ~/.gitstatus/gitstatus.plugin.sh 
+# ## cd /root/.config/nvim/autoload/coc.nvim &&\
+# ## yarn
 
 ## ENV CARGO_HOME /opt/rust
 ## ENV RUSTUP_HOME /opt/rust
@@ -105,20 +117,6 @@ COPY boot .
 ## echo 'PATH=/opt/rust/bin:$PATH' >> /etc/profile.d/path.sh
 
 ## &&\
-## . ~/.asdf/asdf.sh &&\
-## asdf plugin add nodejs &&\
-## ~/.asdf/plugins/nodejs/bin/import-release-team-keyring &&\ 
-## asdf install nodejs $(asdf list all nodejs|tail -1) &&\
-## asdf global nodejs $(asdf list nodejs|tail -1) &&\
-## asdf plugin add yarn 
-##
-## RUN . ~/.asdf/asdf.sh &&\
-## asdf install yarn $(asdf  list all yarn|tail -1) 
-
-## RUN . ~/.asdf/asdf.sh &&\
-## asdf global yarn $(asdf list yarn|tail -1) &&\
-## yarn config set registry https://registry.npm.taobao.org &&\
-## yarn config set prefix ~/.yarn
 
 ##RUN pip3 install --upgrade pip &&\
 ## FROM mirror.ccs.tencentyun.com/gentoo/stage3-amd64:latest
@@ -206,15 +204,9 @@ COPY boot .
 COPY os .
 
 
-RUN \
-mkdir -p ~/.zplugin &&\
-git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin --depth=1 &&\
-cat /root/.zplugin.zsh|grep -P "program|source|light"|zsh &&\
-sed '/github/d' /etc/hosts | tee /etc/hosts &&\
-
-RUN curl --retry 100 -fLo /usr/share/nvim/runtime/autoload/plug.vim --create-dirs &&\
-nvim +PlugInstall +qa &&\
-nvim +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur' +qa 
+# RUN curl --retry 100 -fLo /usr/share/nvim/runtime/autoload/plug.vim --create-dirs &&\
+# nvim +PlugInstall +qa &&\
+# nvim +'CocInstall -sync coc-json coc-yaml coc-css coc-python coc-vetur' +qa 
 #\
 # https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 ##
