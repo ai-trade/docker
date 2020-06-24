@@ -1,10 +1,10 @@
 version: '3'
 services:
   
-  stock-dev:
-    container_name : stock.dev
-    hostname : stock 
-    image: renwucool/dev
+  aitrade-dev:
+    container_name : aitrade.dev
+    hostname : ai 
+    image: aitrade/dev
     restart: unless-stopped
     cap_add:
       - SYS_PTRACE
@@ -12,15 +12,15 @@ services:
       - "10100-10110:10100-10110"
       - "10118:80"
       - "10112:22"
-    # volumes:
-    #   - /mnt/ssh/stock/user/dev/etc/ssh/host:/etc/ssh/host
-    #   - /mnt/ssh/stock/user/dev/root/.ssh:/root/.ssh
-    #   - /mnt/docker/stock/user/dev/var/log:/var/log
-    #   - /mnt/docker/stock/user/dev/etc/rc.d:/etc/rc.d
-    #   - /mnt/docker/stock/user/dev/etc/supervisor.d:/etc/supervisor.d
-    #   - /mnt/docker/stock/user/dev/home:/home
-    #   - /mnt/docker/stock/user/dev/root:/root
-    #   - /mnt/docker/stock/user/dev/var/lib/redis:/var/lib/redis
-    #   - /tmp/docker/stock/dev:/tmp
-    #   - /etc/nginx/conf.d/stock/dev:/etc/nginx/conf.d
+    volumes:
+      - /mnt/ssh/aitrade/user/dev/etc/ssh/host:/etc/ssh/host
+      - /mnt/ssh/aitrade/user/dev/root/.ssh:/root/.ssh
+      - /mnt/docker/aitrade/user/dev/var/log:/var/log
+      - /mnt/docker/aitrade/user/dev/etc/rc.d:/etc/rc.d
+      - /mnt/docker/aitrade/user/dev/etc/supervisor.d:/etc/supervisor.d
+      - /mnt/docker/aitrade/user/dev/home:/home
+      - /mnt/docker/aitrade/user/dev/root:/root
+      - /tmp/docker/aitrade/dev:/tmp
+      - /etc/nginx/conf.d/aitrade/dev:/etc/nginx/conf.d
+    #   - /mnt/docker/aitrade/user/dev/var/lib/redis:/var/lib/redis
   

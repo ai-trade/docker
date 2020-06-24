@@ -13,6 +13,8 @@ export DOCKER_CLI_EXPERIMENTAL=enabled
 # # #  --driver-opt env.ENV_NAME=ENV_VALUE
 # docker buildx use insecure-builder
 # docker buildx build --allow security.insecure -t renwucool/dev .
-docker build -t renwucool/aitrade .
 # docker buildx build -t renwu/dev .
 # docker buildx create --use --name insecure-builder --buildkitd-flags '--allow-insecure-entitlement security.insecure'
+
+
+docker build -t aitrade/dev .

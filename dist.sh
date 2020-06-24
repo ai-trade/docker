@@ -2,5 +2,5 @@
 
 cd $(dirname "$0")
 ./build.sh
-docker push renwucool/aitrade
+docker push aitrade/dev
 
