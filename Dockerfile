@@ -221,6 +221,10 @@ COPY boot .
 ## yarn config set prefix ~/.yarn
 # RUN usermod -s /bin/zsh root && passwd -d root 
 
+RUN rm -rf /etc/ssh/ssh_host_*
+
 RUN mv /root /root.init && updatedb
+
+
 CMD ["/etc/rc.local"]
 
