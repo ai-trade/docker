@@ -1,11 +1,12 @@
 FROM ubuntu
 ENV DEBIAN_FRONTEND noninteractive 
+ENV TERM xterm-256color
 
 ENV TZ=Asia/Shanghai
 RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 && apt-get update \
 && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
-&& apt-get install -y tzdata python3 sudo curl wget python3-pip tmux openssh-client openssh-server supervisor zsh language-pack-zh-hans rsync mlocate neovim git g++ ripgrep python3-dev gist fzf less\
+&& apt-get install -y tzdata python3 sudo curl wget python3-pip tmux openssh-client openssh-server supervisor zsh language-pack-zh-hans rsync mlocate neovim git g++ ripgrep python3-dev gist fzf less column\
 && locale-gen zh_CN.UTF-8 \
 && apt-get clean \
 && apt-get autoclean \
@@ -73,6 +74,19 @@ yarn config set prefix ~/.yarn
 #wget https://raw.githubusercontent.com/eshizhan/dstat/master/dstat -O /usr/bin/dstat &&\
 #chmod +x /usr/bin/dstat
 
+COPY os/root /root
+
+RUN \
+mkdir -p ~/.zplugin &&\
+git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin --depth=1 &&\
+git clone --depth=1 https://github.com/romkatv/gitstatus.git ~/.gitstatus &&\ 
+cat /root/.zplugin.zsh|rg "program|load|source|light"|zsh &&\
+source ~/.zplugin/plugins/romkatv---powerlevel10k/gitstatus/install &&\
+source ~/.gitstatus/gitstatus.plugin.sh 
+
+RUN ssh-keygen -t rsa -P "" -f /etc/ssh/ssh_host_rsa_key &&\
+ssh-keygen -t ecdsa -P "" -f /etc/ssh/ssh_host_ecdsa_key &&\
+ssh-keygen -t ed25519 -P "" -f /etc/ssh/ssh_host_ed25519_key
 
 
 COPY os/usr/share/nvim /usr/share/nvim
@@ -88,14 +102,7 @@ WORKDIR /
 COPY os .
 COPY boot .
 
-ENV TERM xterm-256color
-RUN \
-mkdir -p ~/.zplugin &&\
-git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin --depth=1 &&\
-git clone --depth=1 https://github.com/romkatv/gitstatus.git ~/.gitstatus &&\ 
-cat /root/.zplugin.zsh|rg "program|load|source|light"|zsh &&\
-source ~/.zplugin/plugins/romkatv---powerlevel10k/gitstatus/install &&\
-source ~/.gitstatus/gitstatus.plugin.sh 
+
 # ## cd /root/.config/nvim/autoload/coc.nvim &&\
 # ## yarn
 
@@ -213,10 +220,6 @@ source ~/.gitstatus/gitstatus.plugin.sh
 ## asdf install yarn $(asdf  list all yarn|tail -1) &&\
 ## asdf global yarn $(asdf list yarn|tail -1) &&\
 ## yarn config set prefix ~/.yarn
-## #RUN ssh-keygen -t rsa -P "" -f /etc/ssh/ssh_host_rsa_key &&\
-## #ssh-keygen -t ecdsa -P "" -f /etc/ssh/ssh_host_ecdsa_key &&\
-## #ssh-keygen -t ed25519 -P "" -f /etc/ssh/ssh_host_ed25519_key
-
 # RUN usermod -s /bin/zsh root && passwd -d root 
 
 RUN mv /root /root.init && updatedb
