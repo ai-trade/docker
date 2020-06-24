@@ -14,7 +14,6 @@ if dein#load_state('/etc/vim/dein')
 
   call dein#begin('/etc/vim/dein')
   call dein#add('/etc/vim/dein/repos/github.com/Shougo/dein.vim')
-
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('neoclide/coc.nvim', {'merged':0, 'rev': 'release'})
   call dein#add('tomtom/tcomment_vim') " 批量注释
@@ -32,7 +31,7 @@ if dein#load_state('/etc/vim/dein')
   call dein#add('iloginow/vim-stylus')
   call dein#add('kchmck/vim-coffee-script',{'on_ft':'coffee'}) " Coffee-script语法高亮
   call dein#add('keith/swift.vim',{'on_ft':'swift'})
-  call dein#add('linkinpark342/xonsh-vim')
+  call dein#add('meatballs/vim-xonsh')
   call dein#add('luochen1990/rainbow')                       " 彩虹括号，匹配的括号显示为同一颜色
   call dein#add('maksimr/vim-jsbeautify',{'on_ft':'js'})
   call dein#add('posva/vim-vue',{'on_ft':'vue'})
