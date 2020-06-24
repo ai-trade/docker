@@ -92,9 +92,8 @@ COPY boot .
 RUN \
 mkdir -p ~/.zplugin &&\
 git clone https://github.com/zdharma/zplugin.git ~/.zplugin/bin --depth=1 &&\
-git clone --depth=1 https://github.com/romkatv/gitstatus.git ~/.gitstatus 
-
-# cat /root/.zplugin.zsh|rg "program|load|source|light"|zsh 
+git clone --depth=1 https://github.com/romkatv/gitstatus.git ~/.gitstatus &&\ 
+cat /root/.zplugin.zsh|rg "program|load|source|light"|zsh 
 # &&\
 # source ~/.zplugin/plugins/romkatv---powerlevel10k/gitstatus/install &&\
 # source ~/.gitstatus/gitstatus.plugin.sh 
