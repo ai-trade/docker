@@ -6,6 +6,7 @@ ENV LC_ALL zh_CN.UTF-8
 ENV LANGUAGE zh_CN.UTF-8
 
 ENV TZ=Asia/Shanghai
+
 RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 && apt-get update \
 && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
@@ -58,32 +59,6 @@ source $CARGO_HOME/env &&\
 cargo install cargo-cache exa sd fd-find tokei diskus --root /usr/local &&\
 cargo-cache --remove-dir git-repos,registry-sources &&\
 echo 'PATH=/opt/rust/bin:$PATH' >> /etc/profile.d/path.sh
-
-#RUN apk update && apk upgrade &&\
-#apk add \
-#procps fzf less \
-#postgresql-dev gcompat g++ \
-#ncurses ctags file lua exa lsof \
-#supervisor shadow rsync \
-#py-pip coreutils bash gnupg wget curl gcc \
-#glances cargo ncdu htop tmux ripgrep \
-#mlocate tree zsh git neovim python3 curl openssh \
-#ruby ruby-dev make util-linux	python3-dev \ 
-#--no-cache &&\
-#ln -s /usr/bin/luajit /usr/bin/lua &&\
-#ln -s /usr/bin/python3 /usr/bin/python &&\
-#rm -rf /usr/bin/vi &&\
-#ln -s /usr/bin/nvim /usr/bin/vi &&\
-#ln -s /usr/bin/vi /usr/bin/vim &&\
-#apk add tzdata --no-cache &&\
-#cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime &&\
-#echo "Asia/Shanghai" > /etc/timezone &&\
-#apk del tzdata &&\
-#pip install xonsh ipython &&\
-#gem sources --add https://mirrors.tuna.tsinghua.edu.cn/rubygems/ --remove https://rubygems.org/ &&\
-#gem install gist &&\
-#wget https://raw.githubusercontent.com/eshizhan/dstat/master/dstat -O /usr/bin/dstat &&\
-#chmod +x /usr/bin/dstat
 
 COPY os/root /root
 
