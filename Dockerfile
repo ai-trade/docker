@@ -1,4 +1,10 @@
 FROM ubuntu
+RUN sed -i "s/archive.ubuntu.com/mirrors.aliyun.com/g" /etc/apt/sources.list &&\
+apt-get update -y &&\
+apt-get install -y python3 sudo curl wget &&\
+update-alternatives --install /usr/bin/python python /usr/bin/python3 1 &&\
+curl --silent --show-error --retry 5 https://raw.github.com/pypa/pip/master/contrib/get-pip.py | python 
+
 
 # ENV LANG zh_CN.UTF-8
 # ENV LC_ALL zh_CN.UTF-8
