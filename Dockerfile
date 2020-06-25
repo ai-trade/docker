@@ -15,7 +15,6 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 && apt-get clean \
 && apt-get autoclean \
 && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*  \
-&& update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
 && passwd -d root \
 && chsh -s /bin/zsh root \
 && ln -s /usr/bin/pip3 /usr/bin/pip \
@@ -46,6 +45,7 @@ yarn config set registry https://registry.npm.taobao.org &&\
 yarn config set prefix ~/.yarn &&\
 yarn global add neovim npm-check-updates coffeescript 
 
+RUN update-alternatives --install /usr/bin/python python /usr/bin/python3 1 
 
 ENV CARGO_HOME /opt/rust
 ENV RUSTUP_HOME /opt/rust
