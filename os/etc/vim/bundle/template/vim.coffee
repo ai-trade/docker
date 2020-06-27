@@ -2,7 +2,7 @@ module.exports = =>
 
 
 if not module.parent then do =>
-  await module.exports()
+  console.log await module.exports()
   process.exit()
 
 # module.exports = {
