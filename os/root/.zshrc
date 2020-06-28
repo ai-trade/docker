@@ -12,3 +12,5 @@ source ~/.zplugin.zsh
 if [ -f ~/.bash_profile ]; then
 . ~/.bash_profile
 fi
+
+eval "$(direnv hook zsh)"
