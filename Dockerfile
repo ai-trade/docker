@@ -34,15 +34,15 @@ cd ~/.asdf &&\
 git checkout "$(git describe --abbrev=0 --tags)" &&\
 . ~/.asdf/asdf.sh &&\
 asdf plugin add python &&\
-python_version=$(asdf list all python|rg "^[\d\.]+$"|tail -1) &&
-asdf install python $python_version &&
-asdf global python $python_version &&
+python_version=$(asdf list all python|rg "^[\d\.]+$"|tail -1) &&\
+asdf install python $python_version &&\
+asdf global python $python_version &&\
 asdf plugin add nodejs &&\
 ~/.asdf/plugins/nodejs/bin/import-release-team-keyring &&\
 nodejs_version=$(asdf list all nodejs|tail -1)&&\
 asdf install nodejs $nodejs_version &&\
 asdf global nodejs $nodejs_version &&\
-asdf plugin add yarn  &&\
+asdf plugin add yarn &&\
 . ~/.asdf/asdf.sh &&\
 yarn_version=$(asdf list yarn|tail -1) &&\
 asdf install yarn $yarn_version &&\
