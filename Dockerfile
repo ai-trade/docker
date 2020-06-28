@@ -7,10 +7,11 @@ ENV LANGUAGE zh_CN.UTF-8
 
 ENV TZ=Asia/Shanghai
 
+
 RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 && apt-get update \
 && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone \
-&& apt-get install -y tzdata python3 sudo curl wget python3-pip tmux openssh-client openssh-server supervisor zsh language-pack-zh-hans rsync mlocate neovim git g++ ripgrep python3-dev gist fzf less util-linux apt-utils lua5.3 ctags htop tree cron python-dev libpq-dev postgresql-client bsdmainutils\
+&& apt-get install -y tzdata python3 sudo curl wget python3-pip tmux openssh-client openssh-server supervisor zsh language-pack-zh-hans rsync mlocate neovim git g++ ripgrep python3-dev gist fzf less util-linux apt-utils lua5.3 ctags htop tree cron python-dev libpq-dev postgresql-client bsdmainutils libssl-dev libreadline-dev libbz2-dev &&\
 && locale-gen zh_CN.UTF-8 \
 && apt-get clean \
 && apt-get autoclean \
@@ -32,15 +33,21 @@ git clone https://github.com/asdf-vm/asdf.git ~/.asdf &&\
 cd ~/.asdf &&\
 git checkout "$(git describe --abbrev=0 --tags)" &&\
 . ~/.asdf/asdf.sh &&\
+asdf plugin add python &&\
+python_version=$(asdf list all python|rg "^[\d\.]+$"|tail -1) &&
+asdf install python $python_version &&
+asdf global python $python_version &&
 asdf plugin add nodejs &&\
-~/.asdf/plugins/nodejs/bin/import-release-team-keyring &&\ 
-asdf install nodejs $(asdf list all nodejs|tail -1) &&\
-asdf global nodejs $(asdf list nodejs|tail -1) &&\
+~/.asdf/plugins/nodejs/bin/import-release-team-keyring &&\
+nodejs_version=$(asdf list all nodejs|tail -1)&&\
+asdf install nodejs $nodejs_version &&\
+asdf global nodejs $nodejs_version &&\
 asdf plugin add yarn  &&\
 . ~/.asdf/asdf.sh &&\
-asdf install yarn $(asdf list all yarn|tail -1) &&\
+yarn_version=$(asdf list yarn|tail -1) &&\
+asdf install yarn $yarn_version &&\
 . ~/.asdf/asdf.sh &&\
-asdf global yarn $(asdf list yarn|tail -1) &&\
+asdf global yarn $yarn_version &&\
 yarn config set registry https://registry.npm.taobao.org &&\
 yarn config set prefix ~/.yarn &&\
 yarn global add neovim npm-check-updates coffeescript 
