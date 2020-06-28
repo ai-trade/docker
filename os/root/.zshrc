@@ -1,3 +1,4 @@
+eval "$(direnv hook zsh)"
 
 if [ -f ~/.bash_aliases ]; then
 . ~/.bash_aliases
@@ -13,4 +14,3 @@ if [ -f ~/.bash_profile ]; then
 . ~/.bash_profile
 fi
 
-eval "$(direnv hook zsh)"
