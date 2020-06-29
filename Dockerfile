@@ -21,8 +21,6 @@ RUN sed -i 's/archive.ubuntu.com/mirrors.163.com/g' /etc/apt/sources.list \
 && chsh -s /bin/zsh root \
 && ln -s /usr/bin/pip3 /usr/bin/pip \
 && ln -s /usr/bin/gist-paste /usr/bin/gist \
-&& pip config set global.index-url https://mirrors.aliyun.com/pypi/simple \
-&& pip install yapf flake8 xonsh ipython \
 && rm -rf /etc/ssh/ssh_host_*
 
 SHELL ["/bin/zsh", "-c"]
@@ -38,16 +36,16 @@ asdf plugin add python &&\
 python_version=$(asdf list all python|rg "^[\d\.]+$"|tail -1) &&\
 asdf install python $python_version &&\
 asdf global python $python_version &&\
+pip config set global.index-url https://mirrors.aliyun.com/pypi/simple &&\
+pip install yapf flake8 xonsh ipython &&\
 asdf plugin add nodejs &&\
 ~/.asdf/plugins/nodejs/bin/import-release-team-keyring &&\
 nodejs_version=$(asdf list all nodejs|tail -1)&&\
 asdf install nodejs $nodejs_version &&\
 asdf global nodejs $nodejs_version &&\
 asdf plugin add yarn &&\
-. ~/.asdf/asdf.sh &&\
-yarn_version=$(asdf list yarn|tail -1) &&\
+yarn_version=$(asdf list all yarn|tail -1) &&\
 asdf install yarn $yarn_version &&\
-. ~/.asdf/asdf.sh &&\
 asdf global yarn $yarn_version &&\
 yarn config set registry https://registry.npm.taobao.org &&\
 yarn config set prefix ~/.yarn &&\
