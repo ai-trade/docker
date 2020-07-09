@@ -13,6 +13,7 @@ if dein#load_state('/etc/vim/dein')
   let g:dein#types#git#clone_depth = 1
 
   call dein#begin('/etc/vim/dein')
+  call dein#add('direnv/direnv.vim')
   call dein#add('/etc/vim/dein/repos/github.com/Shougo/dein.vim')
   call dein#add('Shougo/deoplete.nvim')
   call dein#add('neoclide/coc.nvim', {'merged':0, 'rev': 'release'})
