@@ -47,6 +47,7 @@ asdf plugin add yarn &&\
 yarn_version=$(asdf list all yarn|tail -1) &&\
 asdf install yarn $yarn_version &&\
 asdf global yarn $yarn_version &&\
+asdf reshim &&\
 yarn config set registry https://registry.npm.taobao.org &&\
 yarn config set prefix ~/.yarn &&\
 yarn global add neovim npm-check-updates coffeescript 
