@@ -1,0 +1,26 @@
+version: '3'
+services:
+  
+  aitrade-dev-bear:
+    container_name : bear
+    hostname : aitrade/dev
+    image: aitrade/dev
+    restart: unless-stopped
+    cap_add:
+      - SYS_PTRACE
+    ports:
+      - "10300:22"
+      - "10308:80"
+      - "10310-10313:10010-10013"
+    volumes:
+      - /mnt/ssh/aitrade/dev/user/bear/etc/ssh/host:/etc/ssh/host
+      - /mnt/ssh/aitrade/dev/user/bear/root/.ssh:/root/.ssh
+      - /mnt/docker/aitrade/dev/user/bear/var/log:/var/log
+      - /mnt/docker/aitrade/dev/user/bear/etc/rc.d:/etc/rc.d
+      - /mnt/docker/aitrade/dev/user/bear/etc/supervisor.d:/etc/supervisor.d
+      - /mnt/docker/aitrade/dev/user/bear/home:/home
+      - /mnt/docker/aitrade/dev/user/bear/root:/root
+      - /tmp/docker/aitrade/dev/bear:/tmp
+      - /etc/nginx/conf.d/aitrade/dev/bear:/etc/nginx/conf.d
+    #   - /mnt/docker/aitrade/dev/user/bear/var/lib/redis:/var/lib/redis
+  

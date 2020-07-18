@@ -3,6 +3,7 @@
 CONFIG = {
 "aitrade/dev":dict(
 zsp=1,
-yi=2
+yi=2,
+bear=3
 )
 }
